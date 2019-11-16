@@ -1,0 +1,8 @@
+<nav id="navbar-main" class="full-width-bar">
+    <a href="/" id="navbar-logo-button" class="navbar-button"></a>
+    <% if (data) {%>
+        <% if (data.user.account_type == "ACCOUNT_EDUCATOR") {%>
+            <a href="/courses" class="navbar-button">Courses</a>
+        <% }%>
+    <% }%>
+</nav>

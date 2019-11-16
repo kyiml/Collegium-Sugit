@@ -1,0 +1,12 @@
+{ 
+  "extends": "airbnb/base",
+  "rules": {
+    "indent": ["error", 4],
+    "camelcase": "off",
+    "new-cap": "off",
+    "max-len": ["error", {"code":100}],
+    "no-console": "error",
+    "no-param-reassign": ["error", { "props": false }],
+    "no-underscore-dangle": ["error", { "allow": ["_id"] }]
+  }
+}
