@@ -2,9 +2,215 @@ $highlight1: #FFFD05;
 $highlight2: #EBC500;
 $highlight3: #FFAE00;
 
+$link1: #3375E8;
+$link2: #38B5FF;
+
 $background1: #212426;
 $background2: #0F1112;
 
+* {
+	margin:0;
+    padding:0;
+}
+
+*:focus {
+    outline: none;
+}
+
+@font-face {
+    font-family: 'Antipasto';
+    src: url('../fonts/antipasto-reg.ttf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Tex-Gyre';
+    src: url('../fonts/texgyre-reg.otf');
+    font-weight: normal;
+    font-style: normal;
+}
+
 body {
     background-color: $background1;
+}
+
+p {
+    font-size: 25px;
+    line-height:30px;
+    font-family: 'Tex-Gyre';
+    color: $highlight2;
+}
+
+.noselect {
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.settings-label {
+	padding:10px 10px;
+	margin:0px;
+	color:#0D0D0D;
+	font-size:25px;
+	overflow:hidden;
+}
+
+.display-modal-small {
+    border: 1px solid $highlight3;
+    margin:20px;
+    text-align:center;
+    max-width:800px;
+    margin:0 auto;
+}
+
+input[type='text'], input[type='password'] {
+    font-size:25px;
+    line-height:40px;
+    margin:10px 0px;
+    padding:0px 5px;
+    color: $highlight3;
+    background-color:$background2;
+    border:0px solid $highlight3;
+    border-bottom:2px solid $highlight3;
+    &:focus {
+        border-bottom:2px solid $highlight1;
+        background-color: $background1;
+        color:$highlight1;
+    }
+}
+
+.full-width-bar {
+    background-color: $background2;
+    display:block;
+    width:100%;
+}
+
+.settings-button, .navbar-button {
+    display:inline-block;
+    padding:5px;
+    font-size:25px;
+    line-height:40px;
+    min-width:100px;
+    background-color: $background2;
+    color:$highlight3;
+    border:0;
+    &:hover {
+        background-color: $highlight1;
+        color:$background2;
+        cursor: pointer;
+    }
+}
+
+.settings-tab {
+    display:inline-block;
+    padding:5px;
+    font-size:25px;
+    line-height:40px;
+    min-width:100px;
+    background-color: $background1;
+    color:$highlight3;
+    border:1px solid transparent;
+    &:hover {
+        color:$highlight1;
+        border: 1px solid $highlight1;
+        cursor: pointer;
+    }
+    &.active {
+        background-color:$highlight3;
+        color:$background1;
+        &:hover {
+            background-color:$highlight1;
+        }
+    }
+}
+
+.settings-choice-label {
+    display:inline-block;
+    position:relative;
+    border:1px solid transparent;
+    margin:5px 0px;
+    padding:5px 10px;
+	color:$highlight3;
+	font-size:25px;
+    line-height:40px;
+    &:hover {
+        border:1px solid $highlight1;
+        color: $highlight1;
+        cursor:pointer;
+        input[type='radio'], input[type='checkbox'] {
+            + label:before {
+                background-color:$background2;
+            }
+            &:checked + label:before {
+                border:8px solid $highlight1;
+                background-color: $background1;
+            }
+        }
+        input[type='range'] {
+            background-color:$background2;
+        }
+    }
+    input[type='radio'], input[type='checkbox'], input[type='range'] {
+        + label:before {
+            box-sizing:border-box;
+        }
+    }
+    input[type='radio'], input[type='checkbox'] {
+        display: none;
+        + label {
+            display:block;
+            padding-left:40px;
+            &:hover {
+                cursor:pointer;
+            }
+            &:before {
+                content:' ';
+                position:absolute;
+                width:30px;
+                height:30px;
+                background-color:$background2;
+                left:0px;
+                margin-left:10px;
+                margin-top:5px;
+            }
+        }
+        &:checked {
+            + label:before {
+                border:8px solid $highlight3;
+                background-color: $background1;
+            }
+        }
+    }
+    input[type='radio'] + label:before {
+        border-radius: 15px;
+    }
+    input[type='range'] {
+        -webkit-appearance: none;
+        appearance: none;
+        height: 15px;
+        background-color: #B6C6CC;
+        outline: none;
+        width:130px;
+        &::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 25px;
+            height: 25px;
+            background-color: #8492AB;
+            cursor: pointer;
+        }
+        &::-moz-range-thumb {
+            border-radius:0px;
+            border:none;
+            width: 25px;
+            height: 25px;
+            background-color: #8492AB;
+            cursor: pointer;
+        }
+        &::-moz-range-track {
+            background-color:transparent;
+        }
+    }
 }

@@ -35,15 +35,14 @@ const account_type_model_gen = (EXPRESS_body_account_type) => {
 
 const logout = (EXPRESS_request, EXPRESS_response) => {
     EXPRESS_request.session.destroy();
-    EXPRESS_response.redirect('/');
+    EXPRESS_response.redirect('/login');
 };
 
 const login = (EXPRESS_request, EXPRESS_response) => {
     const EXPRESS_body_username = EXPRESS_request.body.username;
     const EXPRESS_body_password = EXPRESS_request.body.password;
-    const EXPRESS_body_account_type = EXPRESS_request.body.account_type;
 
-    if (!EXPRESS_body_username || !EXPRESS_body_password || !EXPRESS_body_account_type) {
+    if (!EXPRESS_body_username || !EXPRESS_body_password) {
         EXPRESS_response.status(400).json({
             error: PROTOCOL_error.INCOMPLETE_FORM,
         });
@@ -51,42 +50,54 @@ const login = (EXPRESS_request, EXPRESS_response) => {
     }
 
     if (typeof EXPRESS_body_username !== 'string' ||
-        typeof EXPRESS_body_password !== 'string' ||
-        typeof EXPRESS_body_account_type !== 'string') {
+        typeof EXPRESS_body_password !== 'string') {
         EXPRESS_response.status(400).json({
             error: PROTOCOL_error.INVALID_FORM,
         });
         return;
     }
 
-    const MONGOOSE_model_account = account_type_model_gen(EXPRESS_body_account_type);
-    if (!MONGOOSE_model_account) {
-        EXPRESS_response.status(400).json({
-            error: PROTOCOL_error.INVALID_FORM,
-        });
-        return;
+    const TMP_try_auth = (MONGOOSE_model_account, TMP_callback) => {
+        LMODULE_login_statics.authenticate(
+            MONGOOSE_model_account, EXPRESS_body_username, EXPRESS_body_password,
+            (TMP_error_1, MONGOOSE_account_doc) => {
+                if (TMP_error_1 || !MONGOOSE_account_doc) {
+                    TMP_callback(false); // account not found (yet)
+                    return;
+                }
+
+                EXPRESS_request.session.account = MONGOOSE_model_account.to_api(
+                    MONGOOSE_account_doc
+                );
+
+                EXPRESS_response.json({
+                    redirect: '/',
+                });
+                TMP_callback(true); // found account
+                return;
+            }
+        );
     }
 
-    LMODULE_login_statics.authenticate(
-        MONGOOSE_model_account, EXPRESS_body_username, EXPRESS_body_password,
-        (TMP_error_1, MONGOOSE_account_doc) => {
-            if (TMP_error_1 || !MONGOOSE_account_doc) {
+    TMP_try_auth(account_type_model_gen(PROTOCOL_account_type.STUDENT), (TMP_result_1) => {
+        if(TMP_result_1) {
+            return;
+        }
+        TMP_try_auth(account_type_model_gen(PROTOCOL_account_type.EDUCATOR), (TMP_result_2) => {
+            if(TMP_result_2) {
+                return;
+            }
+            TMP_try_auth(account_type_model_gen(PROTOCOL_account_type.ADMIN), (TMP_result_3) => {
+                if(TMP_result_3) {
+                    return;
+                }
                 EXPRESS_response.status(401).json({
                     error: PROTOCOL_error.INVALID_LOGIN,
                 });
                 return;
-            }
-
-            EXPRESS_request.session.account = MONGOOSE_model_account.toAPI(
-                MONGOOSE_account_doc
-            );
-
-            EXPRESS_response.json({
-                redirect: '/',
-            });
-            return;
-        }
-    );
+            })
+        })
+    });
 };
 
 const signup = (EXPRESS_request, EXPRESS_response) => {

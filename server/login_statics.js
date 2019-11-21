@@ -29,7 +29,7 @@ const generate_hash = (EXPRESS_body_password, TMP_callback_1) => {
 };
 
 const validate_password = (MONGOOSE_doc_account, EXPRESS_body_password, TMP_callback_1) => {
-    const MONGOOSE_doc_account_password_hash = MONGOOSE_doc_account.password;
+    const MONGOOSE_doc_account_password_hash = MONGOOSE_doc_account.password_hash;
 
     MODULE_crypto.pbkdf2(EXPRESS_body_password, MONGOOSE_doc_account.salt,
         CRYPTO_config.iterations, CRYPTO_config.key_length, 'RSA-SHA512',
@@ -84,3 +84,4 @@ const authenticate = (MONGOOSE_model_account, EXPRESS_body_username, EXPRESS_bod
 
 module.exports.generate_hash = generate_hash;
 module.exports.authenticate = authenticate;
+

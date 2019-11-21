@@ -4,10 +4,12 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <link rel="stylesheet" type="text/css" href="/generated/styles.css">
         <title>Home</title>
     </head>
     <body>
-        
+        <%- include("../components/header.ejs", {data: data}); -%>
+        <%- include("../components/navbar.ejs", {data: data}); -%>
+
+        <%- include("../components/footer.ejs", {data: data}); -%>
     </body>
 </html>

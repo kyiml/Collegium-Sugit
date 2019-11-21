@@ -8,11 +8,11 @@
  */
 
 const get_login_page = (EXPRESS_request, EXPRESS_response) => {
-    EXPRESS_response.render('pages/login', {data: EXPRESS_response.data});
+    EXPRESS_response.render('pages/login', { data: EXPRESS_response.DATA_gathered_data });
 };
 
 const get_index_page = (EXPRESS_request, EXPRESS_response) => {
-    EXPRESS_response.render('pages/index', {data: EXPRESS_response.data});
+    EXPRESS_response.render('pages/index', { data: EXPRESS_response.DATA_gathered_data });
 };
 
 module.exports.get_login_page = get_login_page;

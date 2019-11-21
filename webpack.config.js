@@ -1,12 +1,22 @@
-const path = require('path');
+const MODULE_webpack = require('webpack');
+const MODULE_path = require('path');
 
 module.exports = {
+    mode: process.env.NODE_ENV || 'development',
     entry: {
-        styles: ['./hosted/static/scss/base.scss']
+        react_components: ['./views/react/bootstrapper.jsx'],
+        styles: [
+            './hosted/static/scss/base.scss',
+            './hosted/static/scss/spacing.scss'
+        ]
     },
     output: {
-        path: path.join(__dirname, 'hosted/generated')
+        filename: '[name].bundle.js',
+        path: MODULE_path.join(__dirname, 'hosted/generated')
     },
+    plugins: [
+        new MODULE_webpack.HotModuleReplacementPlugin()
+    ],
     module: {
         rules: [
             {
@@ -24,10 +34,19 @@ module.exports = {
                 use: [
                     'style-loader',
                     'css-loader',
+                    'resolve-url-loader',
                     {
                         loader: 'sass-loader',
                     },
                 ],
+            },
+            {
+                test: /\.(woff2?|ttf|otf|eot|svg)$/,
+                exclude: /node_modules/,
+                loader: 'file-loader',
+                options: {
+                    name: 'fonts/[name].[ext]'
+                }
             }
         ]
     }

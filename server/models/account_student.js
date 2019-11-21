@@ -42,10 +42,10 @@ const MONGOOSE_schema_account_student = new MODULE_mongoose.Schema({
     },
 });
 
-MONGOOSE_schema_account_student.statics.to_api = (MONGOOSE_doc_account_educator) => ({
-    username: MONGOOSE_doc_account_educator.username,
-    account_type: PROTOCOL_account_type.EDUCATOR,
-    _id: MONGOOSE_doc_account_educator._id,
+MONGOOSE_schema_account_student.statics.to_api = (MONGOOSE_doc_account_student) => ({
+    username: MONGOOSE_doc_account_student.username,
+    account_type: PROTOCOL_account_type.STUDENT,
+    _id: MONGOOSE_doc_account_student._id,
 });
 
 MONGOOSE_schema_account_student.statics.generate_hash = LMODULE_login_statics.generate_hash;

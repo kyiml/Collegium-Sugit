@@ -65,7 +65,15 @@ EXPRESS_app.use(
     '/generated', MODULE_express.static(MODULE_path.resolve(`${__dirname}/../hosted/generated`))
 );
 EXPRESS_app.use(
+    '/fonts', MODULE_express.static(MODULE_path.resolve(`${__dirname}/../hosted/generated/fonts`))
+);
+EXPRESS_app.use(
     '/static/img', MODULE_express.static(MODULE_path.resolve(`${__dirname}/../hosted/static/img`))
+);
+EXPRESS_app.use(
+    '/static/libraries', MODULE_express.static(
+        MODULE_path.resolve(`${__dirname}/../hosted/static/libraries`)
+    )
 );
 EXPRESS_app.use(MODULE_serve_favicon(`${__dirname}/../hosted/static/img/favicon.png`));
 EXPRESS_app.disable('x-powered-by');
@@ -93,9 +101,9 @@ EXPRESS_app.set('views', `${__dirname}/../views`);
 EXPRESS_app.use(MODULE_cookie_parser());
 
 EXPRESS_app.use(MODULE_csrf());
-EXPRESS_app.use((TMP_error_1, request, response, next) => {
+EXPRESS_app.use((TMP_error_1, EXPRESS_request, EXPRESS_response, EXPRESS_next) => {
     if (TMP_error_1.code !== 'EBADCSRFTOKEN') {
-        next(TMP_error_1);
+        EXPRESS_next(TMP_error_1);
         return;
     }
     LMODULE_debug.print_message('Missing CSRF token');

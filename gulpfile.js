@@ -13,7 +13,7 @@ const lint_task = (done) => {
 
 const webpack_task = (done) => {
     MODULE_webpack(require('./webpack.config.js'))
-    .pipe(MODULE_gulp.dest('./'));
+    .pipe(MODULE_gulp.dest('./hosted/generated'));
     done();
 };
 
@@ -25,10 +25,6 @@ const watch = (done) => {
     });
     done();
 };
-
-const run = (done) => {
-    MODULE_gulp.parallel(lint_task, webpack_task);
-}
 
 // TODO: integrate these commands as part of the gulpfile
 // "mongo": "sudo mongod -dbpath CollegiumSugit & sleep 2; mongo CollegiumSugit"

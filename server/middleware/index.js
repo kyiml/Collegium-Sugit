@@ -12,7 +12,7 @@ const requires_login = (EXPRESS_request, EXPRESS_response, EXPRESS_next) => {
     const SESSION_account = EXPRESS_request.session.account;
 
     if (!SESSION_account) {
-        EXPRESS_response.redirect('/');
+        EXPRESS_response.redirect('/login');
         return;
     }
     EXPRESS_next();
