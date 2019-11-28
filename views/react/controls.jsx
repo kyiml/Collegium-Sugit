@@ -36,6 +36,41 @@ class Checkbox extends React.Component {
     }
 }
 
+class DropdownControl extends React.Component {
+    static active_dropdowns = {};
+    handle_click() {
+        DropdownControl.active_dropdowns[this.props.name] = 
+            !DropdownControl.active_dropdowns[this.props.name];
+        this.forceUpdate();
+    }
+    render() {
+        const style = DropdownControl.active_dropdowns[this.props.name] ? 
+        (<style>{
+            `.${this.props.name} {\
+                display:block;\
+            }`
+        }</style>)
+        :
+        (<style>{
+            `.${this.props.name} {\
+                display:none;\
+            }`
+        }</style>);
+        const mystyle = DropdownControl.active_dropdowns[this.props.name] ?
+        "settings-dropdown-control active"
+        :
+        "settings-dropdown-control";
+        const icon = this.props.icon ? <img src={this.props.icon}/> : undefined;
+        return (
+            <div className={mystyle} onClick={this.handle_click.bind(this)}>
+                {icon}
+                {this.props.text}
+                {style}
+            </div>
+        );
+    }
+}
+
 class Tab extends React.Component {
     static active_tabs = {};
     static all_tabs = [];
@@ -73,4 +108,4 @@ class Tab extends React.Component {
     }
 }
 
-export {RadioButton, Slider, Checkbox, Tab};
+export {RadioButton, Slider, Checkbox, Tab, DropdownControl};

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>
+            <% if (data.profile) { %>
+                <%- data.profile -%> 's profile
+            <% } else {%>
+                Account Suspended
+            <% }%>
+        </title>
+    </head>
+    <body>
+        <%- include("../components/header.ejs", {data: data}); -%>
+        <%- include("../components/navbar.ejs", {data: data}); -%>
+        <h1>Upload Image</h1>
+ 
+        <form action=<%="/upload/image?_csrf=" + data.csrf%> method="post" enctype="multipart/form-data">
+                <input type="file" accept="image/*" name="image" >
+                <input type="submit" value="upload">
+        </form>
+        <%- include("../components/footer.ejs", {data: data}); -%>
+    </body>
+</html>

@@ -66,7 +66,7 @@ const login = (EXPRESS_request, EXPRESS_response) => {
                     return;
                 }
 
-                EXPRESS_request.session.account = MONGOOSE_model_account.to_api(
+                EXPRESS_request.session.account = MONGOOSE_model_account.to_private_api(
                     MONGOOSE_account_doc
                 );
 
@@ -77,26 +77,26 @@ const login = (EXPRESS_request, EXPRESS_response) => {
                 return;
             }
         );
-    }
+    };
 
     TMP_try_auth(account_type_model_gen(PROTOCOL_account_type.STUDENT), (TMP_result_1) => {
-        if(TMP_result_1) {
+        if (TMP_result_1) {
             return;
         }
         TMP_try_auth(account_type_model_gen(PROTOCOL_account_type.EDUCATOR), (TMP_result_2) => {
-            if(TMP_result_2) {
+            if (TMP_result_2) {
                 return;
             }
             TMP_try_auth(account_type_model_gen(PROTOCOL_account_type.ADMIN), (TMP_result_3) => {
-                if(TMP_result_3) {
+                if (TMP_result_3) {
                     return;
                 }
                 EXPRESS_response.status(401).json({
                     error: PROTOCOL_error.INVALID_LOGIN,
                 });
                 return;
-            })
-        })
+            });
+        });
     });
 };
 
@@ -144,19 +144,19 @@ const signup = (EXPRESS_request, EXPRESS_response) => {
     LMODULE_login_statics.generate_hash(
         EXPRESS_request.body.password,
         (CRYPTO_salt, CRYPTO_hash_result) => {
-            const MONGOOSE_new_account_educator_data = {
+            const MONGOOSE_new_account_data = {
                 username: EXPRESS_body_username,
                 salt: CRYPTO_salt,
                 password_hash: CRYPTO_hash_result,
             };
 
-            const MONGOOSE_new_account_educator = new MONGOOSE_model_account(
-                MONGOOSE_new_account_educator_data
+            const MONGOOSE_new_account = new MONGOOSE_model_account(
+                MONGOOSE_new_account_data
             );
-            const MONGOOSE_save_promise = MONGOOSE_new_account_educator.save();
+            const MONGOOSE_save_promise = MONGOOSE_new_account.save();
             MONGOOSE_save_promise.then(() => {
-                EXPRESS_request.session.account = MONGOOSE_model_account.to_api(
-                    MONGOOSE_new_account_educator
+                EXPRESS_request.session.account = MONGOOSE_model_account.to_private_api(
+                    MONGOOSE_new_account
                 );
                 EXPRESS_response.json({
                     redirect: '/',

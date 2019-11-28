@@ -11,4 +11,5 @@ module.exports.account_admin = require('./account_admin.js');
 module.exports.account_educator = require('./account_educator.js');
 module.exports.account_student = require('./account_student.js');
 module.exports.login_manager = require('./login_manager.js');
+module.exports.asset_manager = require('./asset_manager');
 module.exports.pages = require('./pages.js');

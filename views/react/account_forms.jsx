@@ -21,8 +21,8 @@ class SignupForm extends React.Component {
             FORM_method, 
             FORM_action, 
             FORM_data, 
-            () => {
-                window.location = response.redirect;
+            (XHR_response) => {
+                window.location = XHR_response.redirect;
             }
         );
         return false;
@@ -87,8 +87,8 @@ class LoginForm extends React.Component {
             FORM_method, 
             FORM_action, 
             FORM_data, 
-            () => { 
-                window.location = response.redirect; 
+            (XHR_response) => { 
+                window.location = XHR_response.redirect; 
             }
         );
         return false;

@@ -87,20 +87,34 @@ input[type='text'], input[type='password'] {
     width:100%;
 }
 
-.settings-button, .navbar-button {
+.settings-button, .navbar-button, .settings-dropdown-control {
     display:inline-block;
     padding:5px;
     font-size:25px;
     line-height:40px;
-    min-width:100px;
+    min-width:120px;
     background-color: $background2;
     color:$highlight3;
     border:0;
+    text-align: center;
+    text-decoration: none;
     &:hover {
         background-color: $highlight1;
         color:$background2;
         cursor: pointer;
     }
+    img {
+        width:20px;
+        height:20px;
+        padding-right:5px;
+    }
+    &.active {
+        background-color:$highlight1;
+    }
+}
+
+.settings-dropdown-control {
+    display:block;
 }
 
 .settings-tab {

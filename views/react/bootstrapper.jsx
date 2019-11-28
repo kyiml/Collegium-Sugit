@@ -1,5 +1,5 @@
 import ReactHabitat from 'react-habitat';
-import {RadioButton, Tab} from './controls.jsx';
+import {RadioButton, Tab, DropdownControl} from './controls.jsx';
 import {LoginForm, SignupForm} from './account_forms.jsx';
 
 class Bootstrapper extends ReactHabitat.Bootstrapper {
@@ -19,6 +19,9 @@ class Bootstrapper extends ReactHabitat.Bootstrapper {
         });
         builder.register(SignupForm).as('SignupForm').withOptions({
             tag: 'div',
+        });
+        builder.register(DropdownControl).as('DropdownControl').withOptions({
+            tag: 'span',
         });
 
 

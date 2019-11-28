@@ -40,12 +40,24 @@ const MONGOOSE_schema_account_student = new MODULE_mongoose.Schema({
         type: Date,
         default: Date.now,
     },
+
+    profile_picture: {
+        type: String,
+        required: false,
+    }
 });
 
-MONGOOSE_schema_account_student.statics.to_api = (MONGOOSE_doc_account_student) => ({
+MONGOOSE_schema_account_student.statics.to_private_api = (MONGOOSE_doc_account_student) => ({
     username: MONGOOSE_doc_account_student.username,
     account_type: PROTOCOL_account_type.STUDENT,
+    created_on: MONGOOSE_doc_account_student.created_on,
     _id: MONGOOSE_doc_account_student._id,
+});
+
+MONGOOSE_schema_account_student.statics.to_public_api = (MONGOOSE_doc_account_student) => ({
+    username: MONGOOSE_doc_account_student.username,
+    account_type: PROTOCOL_account_type.STUDENT,
+    created_on: MONGOOSE_doc_account_student.created_on,
 });
 
 MONGOOSE_schema_account_student.statics.generate_hash = LMODULE_login_statics.generate_hash;

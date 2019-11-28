@@ -40,12 +40,24 @@ const MONGOOSE_schema_account_educator = new MODULE_mongoose.Schema({
         type: Date,
         default: Date.now,
     },
+
+    profile_picture: {
+        type: String,
+        required: false,
+    }
 });
 
-MONGOOSE_schema_account_educator.statics.to_api = (MONGOOSE_doc_account_educator) => ({
+MONGOOSE_schema_account_educator.statics.to_private_api = (MONGOOSE_doc_account_educator) => ({
     username: MONGOOSE_doc_account_educator.username,
     account_type: PROTOCOL_account_type.EDUCATOR,
+    created_on: MONGOOSE_doc_account_educator.created_on,
     _id: MONGOOSE_doc_account_educator._id,
+});
+
+MONGOOSE_schema_account_educator.statics.to_public_api = (MONGOOSE_doc_account_educator) => ({
+    username: MONGOOSE_doc_account_educator.username,
+    account_type: PROTOCOL_account_type.EDUCATOR,
+    created_on: MONGOOSE_doc_account_educator.created_on,
 });
 
 MONGOOSE_schema_account_educator.statics.generate_hash = LMODULE_login_statics.generate_hash;

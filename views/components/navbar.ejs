@@ -4,6 +4,26 @@
         <% if (data.user.account_type == "ACCOUNT_EDUCATOR") {%>
             <a href="/courses" class="navbar-button">Courses</a>
         <% }%>
+        <div style="float:right;">
+            <div 
+                data-component="DropdownControl" 
+                data-prop-name="user-dropdown" 
+                data-prop-icon=
+                <% if(data.user.profile_picture) {%>
+                    <%- data.user.profile_picture -%>
+                <% } else {%>
+                    <%- "/static/img/profile_picture_default.png" -%>
+                <% }%>
+                data-prop-text=
+                <%- data.user.username -%>
+            ></div>
+            <a href=<%- "/profile/" + data.user.username -%>
+                class="settings-button user-dropdown"
+            >My Profile</a>
+            <a href="/logout"
+                class="settings-button user-dropdown"
+            >Logout</a>
+        </div>
     <% }%>
 </nav>
 <br><br>
