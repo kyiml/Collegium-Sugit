@@ -7,7 +7,9 @@ const write_creds = () => {
     if (!GCP_vision_config) {
         return;
     }
-    const GCP_vision_config_location = `${dirname}/../credentials/gcp_vision_auth.json`;
+    const GCP_vision_config_location = MODULE_path.resolve(
+        `${__dirname}/../credentials/gcp_vision_auth.json`
+    );
     LMODULE_debug.print_message(`writing gcp auth to ${GCP_vision_config_location}`);
     MODULE_fs.writeFile(
         GCP_vision_config_location, GCP_vision_config,
