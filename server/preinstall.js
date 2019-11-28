@@ -6,7 +6,7 @@ const write_creds = () => {
     if (!GCP_vision_config) {
         return;
     }
-    MODULE_fs.writeFile('../credentials/gcp_vision_auth.json', GCP_vision_config, () => {
+    MODULE_fs.writeFile('./credentials/gcp_vision_auth.json', GCP_vision_config, () => {
         LMODULE_debug.print_message('fatal error!');
         return;
     });
