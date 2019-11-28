@@ -75,7 +75,7 @@ const REDIS_config_gen = () => {
         };
     }
     const REDIS_config_parsed_url = MODULE_url.parse(REDIS_config_url);
-    const REDIS_config_parsed_pass = REDIS_config_url.auth.split(':')[1];
+    const REDIS_config_parsed_pass = REDIS_config_url.split(':')[1];
     return {
         url: REDIS_config_parsed_url,
         pass: REDIS_config_parsed_pass,
