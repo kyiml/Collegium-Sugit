@@ -22,7 +22,7 @@ const get_profile_page = (EXPRESS_request, EXPRESS_response) => {
     const EXPRESS_url_profile_name = EXPRESS_request.url.match(REGEX_url_profile_name)[1];
     LMODULE_debug.print_message(`Profile requested: ${EXPRESS_url_profile_name}`);
     EXPRESS_response.render('pages/profile', { data: EXPRESS_response.DATA_gathered_data });
-}
+};
 
 module.exports.get_login_page = get_login_page;
 module.exports.get_index_page = get_index_page;

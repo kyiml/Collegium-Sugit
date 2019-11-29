@@ -46,7 +46,7 @@ const MONGOOSE_schema_account = new MODULE_mongoose.Schema({
     profile_picture: {
         type: String,
         required: false,
-    }
+    },
 });
 
 MONGOOSE_schema_account.statics.to_private_api = (MONGOOSE_doc_account) => ({

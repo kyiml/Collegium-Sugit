@@ -90,20 +90,20 @@ const signup = (EXPRESS_request, EXPRESS_response) => {
         return;
     }
 
-    switch(EXPRESS_body_account_type) {
-        case PROTOCOL_account_type.ADMIN:
-            EXPRESS_response.status(403).json({
-                error: PROTOCOL_error.INVALID_FORM,
-            });
-            return;
-        case PROTOCOL_account_type.STUDENT:
-        case PROTOCOL_account_type.EDUCATOR:
-            break;
-        default:
-            EXPRESS_response.status(403).json({
-                error: PROTOCOL_error.INVALID_FORM,
-            });
-            return;
+    switch (EXPRESS_body_account_type) {
+    case PROTOCOL_account_type.ADMIN:
+        EXPRESS_response.status(403).json({
+            error: PROTOCOL_error.INVALID_FORM,
+        });
+        return;
+    case PROTOCOL_account_type.STUDENT:
+    case PROTOCOL_account_type.EDUCATOR:
+        break;
+    default:
+        EXPRESS_response.status(403).json({
+            error: PROTOCOL_error.INVALID_FORM,
+        });
+        return;
     }
     if (!MONGOOSE_model_account) {
         EXPRESS_response.status(400).json({
