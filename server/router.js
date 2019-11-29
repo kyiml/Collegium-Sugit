@@ -27,6 +27,7 @@ const CNST_signup = LMODULE_controllers.login_manager.signup;
 const CNST_logout = LMODULE_controllers.login_manager.logout;
 
 const CNST_upload_image = LMODULE_controllers.asset_manager.upload_image;
+const CNST_download_asset = LMODULE_controllers.asset_manager.download_asset;
 
 const router = (EXPRESS_app) => {
     EXPRESS_app.use(CNST_gather_csrf_data);
@@ -40,6 +41,8 @@ const router = (EXPRESS_app) => {
 
     EXPRESS_app.post('/upload/image', CNST_require_login, CNST_gather_account_data,
         MULTER.single('image'), CNST_upload_image);
+
+    EXPRESS_app.get('/assets*', CNST_require_login, CNST_gather_account_data, CNST_download_asset);
 };
 
 module.exports = router;

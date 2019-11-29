@@ -16,22 +16,7 @@ const LMODULE_login_statics = require('../login_statics.js');
 const PROTOCOL_error = LMODULE_protocol.error;
 const PROTOCOL_account_type = LMODULE_protocol.account_type;
 
-const MONGOOSE_model_account_educator = LMODULE_models.account_educator.model;
-const MONGOOSE_model_account_student = LMODULE_models.account_student.model;
-const MONGOOSE_model_account_admin = LMODULE_models.account_admin.model;
-
-const account_type_model_gen = (EXPRESS_body_account_type) => {
-    switch (EXPRESS_body_account_type) {
-    case PROTOCOL_account_type.ADMIN:
-        return MONGOOSE_model_account_admin;
-    case PROTOCOL_account_type.EDUCATOR:
-        return MONGOOSE_model_account_educator;
-    case PROTOCOL_account_type.STUDENT:
-        return MONGOOSE_model_account_student;
-    default:
-        return undefined;
-    }
-};
+const MONGOOSE_model_account = LMODULE_models.account.model;
 
 const logout = (EXPRESS_request, EXPRESS_response) => {
     EXPRESS_request.session.destroy();
@@ -57,47 +42,26 @@ const login = (EXPRESS_request, EXPRESS_response) => {
         return;
     }
 
-    const TMP_try_auth = (MONGOOSE_model_account, TMP_callback) => {
-        LMODULE_login_statics.authenticate(
-            MONGOOSE_model_account, EXPRESS_body_username, EXPRESS_body_password,
-            (TMP_error_1, MONGOOSE_account_doc) => {
-                if (TMP_error_1 || !MONGOOSE_account_doc) {
-                    TMP_callback(false); // account not found (yet)
-                    return;
-                }
-
-                EXPRESS_request.session.account = MONGOOSE_model_account.to_private_api(
-                    MONGOOSE_account_doc
-                );
-
-                EXPRESS_response.json({
-                    redirect: '/',
-                });
-                TMP_callback(true); // found account
-                return;
-            }
-        );
-    };
-
-    TMP_try_auth(account_type_model_gen(PROTOCOL_account_type.STUDENT), (TMP_result_1) => {
-        if (TMP_result_1) {
-            return;
-        }
-        TMP_try_auth(account_type_model_gen(PROTOCOL_account_type.EDUCATOR), (TMP_result_2) => {
-            if (TMP_result_2) {
-                return;
-            }
-            TMP_try_auth(account_type_model_gen(PROTOCOL_account_type.ADMIN), (TMP_result_3) => {
-                if (TMP_result_3) {
-                    return;
-                }
+    LMODULE_login_statics.authenticate(
+        MONGOOSE_model_account, EXPRESS_body_username, EXPRESS_body_password,
+        (TMP_error_1, MONGOOSE_account_doc) => {
+            if (TMP_error_1 || !MONGOOSE_account_doc) {
                 EXPRESS_response.status(401).json({
                     error: PROTOCOL_error.INVALID_LOGIN,
                 });
                 return;
+            }
+
+            EXPRESS_request.session.account = MONGOOSE_model_account.to_private_api(
+                MONGOOSE_account_doc
+            );
+
+            EXPRESS_response.json({
+                redirect: '/',
             });
-        });
-    });
+            return;
+        }
+    );
 };
 
 const signup = (EXPRESS_request, EXPRESS_response) => {
@@ -126,7 +90,21 @@ const signup = (EXPRESS_request, EXPRESS_response) => {
         return;
     }
 
-    const MONGOOSE_model_account = account_type_model_gen(EXPRESS_body_account_type);
+    switch(EXPRESS_body_account_type) {
+        case PROTOCOL_account_type.ADMIN:
+            EXPRESS_response.status(403).json({
+                error: PROTOCOL_error.INVALID_FORM,
+            });
+            return;
+        case PROTOCOL_account_type.STUDENT:
+        case PROTOCOL_account_type.EDUCATOR:
+            break;
+        default:
+            EXPRESS_response.status(403).json({
+                error: PROTOCOL_error.INVALID_FORM,
+            });
+            return;
+    }
     if (!MONGOOSE_model_account) {
         EXPRESS_response.status(400).json({
             error: PROTOCOL_error.INVALID_FORM,
@@ -148,6 +126,7 @@ const signup = (EXPRESS_request, EXPRESS_response) => {
                 username: EXPRESS_body_username,
                 salt: CRYPTO_salt,
                 password_hash: CRYPTO_hash_result,
+                account_type: EXPRESS_body_account_type,
             };
 
             const MONGOOSE_new_account = new MONGOOSE_model_account(
