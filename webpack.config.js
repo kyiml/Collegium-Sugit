@@ -31,6 +31,7 @@ module.exports = {
             },
             {
                 test: /\.s[ac]ss$/i,
+                exclude: /node_modules\/(?!@fortawesome).*/,
                 use: [
                     'style-loader',
                     'css-loader',
@@ -42,6 +43,7 @@ module.exports = {
             },
             {
                 test: /\.(woff2?|ttf|otf|eot|svg)$/,
+                exclude: /node_modules\/(?!@fortawesome).*/,
                 loader: 'file-loader',
                 options: {
                     name: 'fonts/[name].[ext]',
