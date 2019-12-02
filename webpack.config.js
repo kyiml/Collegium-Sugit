@@ -41,12 +41,12 @@ module.exports = {
                 ],
             },
             {
-                test: /\.(woff2?|ttf|otf|eot|svg)$/,
-                exclude: /node_modules/,
+                test: /\.(woff2?|ttf|otf|eot|svg)(\?[a-z0-9]+)?$/,
                 loader: 'file-loader',
                 options: {
-                    name: 'fonts/[name].[ext]'
-                }
+                    name: 'fonts/[name].[ext]',
+                    publicPath: '/generated'
+                },
             }
         ]
     }

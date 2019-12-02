@@ -47,12 +47,18 @@ const MONGOOSE_schema_account = new MODULE_mongoose.Schema({
         type: String,
         required: false,
     },
+
+    profile_bio: {
+        type: String,
+        required: false,
+    },
 });
 
 MONGOOSE_schema_account.statics.to_private_api = (MONGOOSE_doc_account) => ({
     username: MONGOOSE_doc_account.username,
     account_type: MONGOOSE_doc_account.account_type,
     created_on: MONGOOSE_doc_account.created_on,
+    profile_picture: MONGOOSE_doc_account.profile_picture,
     _id: MONGOOSE_doc_account._id,
 });
 
@@ -60,6 +66,7 @@ MONGOOSE_schema_account.statics.to_public_api = (MONGOOSE_doc_account) => ({
     username: MONGOOSE_doc_account.username,
     account_type: MONGOOSE_doc_account.account_type,
     created_on: MONGOOSE_doc_account.created_on,
+    profile_picture: MONGOOSE_doc_account.profile_picture,
 });
 
 MONGOOSE_schema_account.statics.generate_hash = LMODULE_login_statics.generate_hash;

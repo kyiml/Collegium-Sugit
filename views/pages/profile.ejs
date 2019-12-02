@@ -6,21 +6,57 @@
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>
             <% if (data.profile) { %>
-                <%- data.profile -%> 's profile
+                <%- data.profile.username -%> 's profile
             <% } else {%>
-                Account Suspended
+                Account Not Available
             <% }%>
         </title>
     </head>
     <body>
         <%- include("../components/header.ejs", {data: data}); -%>
         <%- include("../components/navbar.ejs", {data: data}); -%>
-        <h1>Upload Image</h1>
- 
-        <form action=<%="/upload/image?_csrf=" + data.csrf%> method="post" enctype="multipart/form-data">
-                <input type="file" accept="image/*" name="image" >
-                <input type="submit" value="upload">
-        </form>
+        <% if (data.profile) { %>
+            <div class="page-centered">
+                <div id="profile-box" class="content-box">
+                    <img 
+                        class="picture-box large"
+                        src=
+                        <% if(data.profile.profile_picture) {%>
+                            <%- data.profile.profile_picture -%>
+                        <% } else {%>
+                            <%- "/static/img/profile_picture_default.png" -%>
+                        <% }%>
+                    />
+                    <div id="profile-description">
+                        <h1>
+                            <% if(data.profile.account_type === "ACCOUNT_STUDENT") { %>
+                                <i class="fas fa-graduation-cap"></i>
+                            <% } else if(data.profile.account_type === "ACCOUNT_EDUCATOR") {%>
+                                <i class="fas fa-apple-alt"></i>
+                            <% } else if(data.profile.account_type === "ACCOUNT_ADMIN") {%>
+                                <i class="fas fa-gavel"></i>
+                            <% }%>
+                            <%- data.profile.username -%>
+                        </h1>
+                        <h4>joined 
+                            <%- 
+                                (() => {
+                                    const date = data.profile.created_on.toString().split(' ');
+                                    return `${date[1]} ${date[2]}, ${date[3]}`;
+                                })()
+                            -%>
+                        </h4>
+                    </div>
+                    <% if(data.user && data.user.username === data.profile.username) { %>
+                        <div style="position: absolute; right:0; bottom:0;">
+                            <a href="/settings" class="settings-button">Edit Profile</a>
+                        </div>
+                    <% }%>
+                </div>
+            </div>
+        <% } else {%>
+            Account Not Available
+        <% }%>
         <%- include("../components/footer.ejs", {data: data}); -%>
     </body>
 </html>

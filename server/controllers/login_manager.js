@@ -8,6 +8,8 @@
  *      account types
  */
 
+const MODULE_mongoose = require('mongoose');
+
 const LMODULE_models = require('../models');
 const LMODULE_protocol = require('../protocol.js');
 const LMODULE_debug = require('../debug.js');
@@ -17,6 +19,7 @@ const PROTOCOL_error = LMODULE_protocol.error;
 const PROTOCOL_account_type = LMODULE_protocol.account_type;
 
 const MONGOOSE_model_account = LMODULE_models.account.model;
+const MONGOOSE_model_asset = LMODULE_models.asset.model;
 
 const logout = (EXPRESS_request, EXPRESS_response) => {
     EXPRESS_request.session.destroy();
@@ -157,6 +160,61 @@ const signup = (EXPRESS_request, EXPRESS_response) => {
     return;
 };
 
+const update_settings = (EXPRESS_request, EXPRESS_response) => {
+    const EXPRESS_body_profile_picture = EXPRESS_request.body.profile_picture;
+    if(EXPRESS_body_profile_picture) {
+        const REGEX_url_asset_id = /^\/assets\/([0-9a-f]*?)\/?$/;
+        const REGEX_url_asset_id_match = EXPRESS_body_profile_picture.match(REGEX_url_asset_id);
+        if(!REGEX_url_asset_id_match) {
+            EXPRESS_response.status(400).json({
+                error: PROTOCOL_error.INVALID_QUERY
+            });
+            return;
+        }
+        const EXPRESS_url_asset_id = REGEX_url_asset_id_match[1];
+        MONGOOSE_model_asset.find_by_id(EXPRESS_url_asset_id, (TMP_error_1, MONGOOSE_doc_asset) => {
+            if (TMP_error_1) {
+                EXPRESS_response.status(404).json({
+                    error: PROTOCOL_error.NOT_FOUND,
+                });
+                return;
+            }
+            const MONGOOSE_asset_read_permission = MONGOOSE_model_asset.read_permission(
+                MONGOOSE_doc_asset, undefined
+            );
+            if (!MONGOOSE_asset_read_permission) {
+                EXPRESS_response.status(403).json({
+                    error: PROTOCOL_error.PERMISSION_DENIED,
+                });
+                return;
+            }
+            const MONGOOSE_profile_updates = {'profile_picture':EXPRESS_body_profile_picture};
+            const MONGOOSE_profile_query = {
+                _id:MODULE_mongoose.Types.ObjectId(EXPRESS_request.session.account._id)
+            };
+            MONGOOSE_model_account.findOneAndUpdate(
+                MONGOOSE_profile_query, 
+                MONGOOSE_profile_updates,
+                (TMP_error_2, MONGOOSE_doc_account) => {
+                    if(TMP_error_2 || !MONGOOSE_doc_account) {
+                        LMODULE_debug.print_message(TMP_error_2 || "ACCOUNT NOT FOUND");
+                        EXPRESS_response.status(500).json({
+                            error: PROTOCOL_error.INTERNAL_SERVER_ERROR
+                        });
+                        return;
+                    }
+                    EXPRESS_request.session.account = MONGOOSE_model_account.to_private_api(
+                        MONGOOSE_doc_account
+                    );
+                    EXPRESS_response.status(204).send({});
+                    return;
+                }
+            );
+        });
+    }
+};
+
 module.exports.login = login;
 module.exports.logout = logout;
 module.exports.signup = signup;
+module.exports.update_settings = update_settings;

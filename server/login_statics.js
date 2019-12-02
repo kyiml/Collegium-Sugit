@@ -84,4 +84,4 @@ const authenticate = (MONGOOSE_model_account, EXPRESS_body_username, EXPRESS_bod
 
 module.exports.generate_hash = generate_hash;
 module.exports.authenticate = authenticate;
-
+module.exports.find_by_username = find_by_username;

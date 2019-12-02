@@ -8,14 +8,12 @@ $link2: #38B5FF;
 $background1: #212426;
 $background2: #0F1112;
 
-* {
-	margin:0;
-    padding:0;
-}
+$greytone1: #4c555a;
 
-*:focus {
-    outline: none;
-}
+$fa-font-path: '~@fortawesome/fontawesome-free/webfonts';
+@import '~@fortawesome/fontawesome-free/scss/fontawesome';
+@import '~@fortawesome/fontawesome-free/scss/solid';
+@import '~@fortawesome/fontawesome-free/scss/regular';
 
 @font-face {
     font-family: 'Antipasto';
@@ -29,6 +27,15 @@ $background2: #0F1112;
     src: url('../fonts/texgyre-reg.otf');
     font-weight: normal;
     font-style: normal;
+}
+
+* {
+	margin:0;
+    padding:0;
+}
+
+*:focus {
+    outline: none;
 }
 
 body {
@@ -79,6 +86,20 @@ input[type='text'], input[type='password'] {
         background-color: $background1;
         color:$highlight1;
     }
+}
+
+input[type="file"] {
+    display: none;
+}
+
+.settings-file-selected {
+    font-size: 25px;
+    line-height:30px;
+    font-family: 'Tex-Gyre';
+    color: $highlight2;
+    min-width:200px;
+    display:inline-block;
+    margin:0px 20px;
 }
 
 .full-width-bar {
@@ -226,5 +247,48 @@ input[type='text'], input[type='password'] {
         &::-moz-range-track {
             background-color:transparent;
         }
+    }
+}
+
+.content-box {
+    position:relative;
+    margin:0 auto;
+    width: 80%;
+}
+
+.picture-box {
+    border:1px solid $highlight3;
+    &.large {
+        width: 200px;
+        height: 200px;
+    }
+    &.circle {
+        border-radius:50%;
+    }
+}
+
+#profile-description {
+    display:inline-block;
+    vertical-align:top;
+    h1 {
+        color: $highlight3;
+        margin-left: 10px;
+        display: inline-block;
+        font-size: 32px;
+        line-height:32px;
+    }
+    h4 {
+        color: $greytone1;
+        margin-left:20px;
+        display: inline-block;
+        vertical-align: text-bottom;
+        line-height:32px;
+        font-size: 16px;
+    }
+    h6 {
+        color: $highlight1;
+        margin-left: 10px;
+        font-size: 13px;
+        line-height:16px;
     }
 }

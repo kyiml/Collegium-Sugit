@@ -102,7 +102,14 @@ const upload_image = (EXPRESS_request, EXPRESS_response) => {
 
 const download_asset = (EXPRESS_request, EXPRESS_response) => {
     const REGEX_url_asset_id = /^\/assets\/([0-9a-f]*?)\/?$/;
-    const EXPRESS_url_asset_id = EXPRESS_request.url.match(REGEX_url_asset_id)[1];
+    const REGEX_url_asset_id_match = EXPRESS_request.url.match(REGEX_url_asset_id);
+    if(!REGEX_url_asset_id_match) {
+        EXPRESS_response.status(400).json({
+            error: PROTOCOL_error.INVALID_QUERY
+        });
+        return;
+    }
+    const EXPRESS_url_asset_id = REGEX_url_asset_id_match[1];
     MONGOOSE_model_asset.find_by_id(EXPRESS_url_asset_id, (TMP_error_1, MONGOOSE_doc_asset) => {
         if (TMP_error_1) {
             EXPRESS_response.status(404).json({
@@ -132,7 +139,7 @@ const download_asset = (EXPRESS_request, EXPRESS_response) => {
                     });
                     return;
                 }
-                EXPRESS_response.status(200).send(AWS_S3_response.Body.data);
+                EXPRESS_response.status(200).send(AWS_S3_response.Body);
                 return;
             }
         );
