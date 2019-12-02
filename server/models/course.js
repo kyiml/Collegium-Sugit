@@ -18,7 +18,7 @@ const MONGOOSE_schema_course = new MODULE_mongoose.Schema({
         type: String,
         required: true,
         trim: true,
-        match: /^[A-Za-z0-9_- ]{1,32}$/,
+        match: /^[ A-Za-z0-9_-]{1,32}$/,
     },
 
     description: {

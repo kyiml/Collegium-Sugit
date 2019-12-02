@@ -25,27 +25,27 @@ const get_index_page = (EXPRESS_request, EXPRESS_response) => {
 };
 
 const get_courses_page = (EXPRESS_request, EXPRESS_response) => {
-    EXPRESS_response.render('pages/courses', {data: EXPRESS_response.DATA_gathered_data});
+    EXPRESS_response.render('pages/courses', { data: EXPRESS_response.DATA_gathered_data });
 };
 
 const get_settings_page = (EXPRESS_request, EXPRESS_response) => {
-    EXPRESS_response.render('pages/settings', {data: EXPRESS_response.DATA_gathered_data});
+    EXPRESS_response.render('pages/settings', { data: EXPRESS_response.DATA_gathered_data });
 };
 
 const get_profile_page = (EXPRESS_request, EXPRESS_response) => {
     const REGEX_url_profile_name = /^\/profile\/([A-Za-z0-9_-]{1,32})\/?$/;
     const REGEX_url_profile_name_match = EXPRESS_request.url.match(REGEX_url_profile_name);
-    if(!REGEX_url_profile_name_match) {
+    if (!REGEX_url_profile_name_match) {
         EXPRESS_response.status(400).json({
-            error: PROTOCOL_error.INVALID_QUERY
+            error: PROTOCOL_error.INVALID_QUERY,
         });
         return;
     }
     const EXPRESS_url_profile_name = REGEX_url_profile_name_match[1];
     LMODULE_debug.print_message(`Profile requested: ${EXPRESS_url_profile_name}`);
-    
+
     LMODULE_login_statics.find_by_username(
-        MONGOOSE_model_account, EXPRESS_url_profile_name, 
+        MONGOOSE_model_account, EXPRESS_url_profile_name,
         (TMP_error_1, MONGOOSE_doc_account) => {
             if (TMP_error_1) {
                 LMODULE_debug.print_message(TMP_error_1);

@@ -103,9 +103,9 @@ const upload_image = (EXPRESS_request, EXPRESS_response) => {
 const download_asset = (EXPRESS_request, EXPRESS_response) => {
     const REGEX_url_asset_id = /^\/assets\/([0-9a-f]*?)\/?$/;
     const REGEX_url_asset_id_match = EXPRESS_request.url.match(REGEX_url_asset_id);
-    if(!REGEX_url_asset_id_match) {
+    if (!REGEX_url_asset_id_match) {
         EXPRESS_response.status(400).json({
-            error: PROTOCOL_error.INVALID_QUERY
+            error: PROTOCOL_error.INVALID_QUERY,
         });
         return;
     }
