@@ -47,6 +47,27 @@ const MONGOOSE_schema_course = new MODULE_mongoose.Schema({
     },
 });
 
+MONGOOSE_schema_course.statics.find_by_id = (MONGOOSE_course_id, TMP_callback_1) => {
+    const MONGOOSE_search = {
+        _id: MONGOOSE_convert_id(MONGOOSE_course_id),
+    };
+    MONGOOSE_model_asset.findOne(MONGOOSE_search, TMP_callback_1);
+    return;
+};
+
+MONGOOSE_schema_course.statics.get_by_new = (MONGOOSE_num_courses, TMP_callback_1) => {
+    const MONGOOSE_search = {
+        is_listed: true,
+    };
+    const MONGOOSE_sort = {
+        _id: -1,
+    };
+    MONGOOSE_model_course.find(MONGOOSE_search)
+        .sort(MONGOOSE_sort)
+        .limit(MONGOOSE_num_courses)
+        .exec(TMP_callback_1);
+}
+
 MONGOOSE_schema_course.statics.to_private_api = (MONGOOSE_doc_course) => ({
     title: MONGOOSE_doc_course.title,
     description: MONGOOSE_doc_course.description,

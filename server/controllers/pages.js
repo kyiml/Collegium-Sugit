@@ -15,6 +15,7 @@ const LMODULE_login_statics = require('../login_statics.js');
 const PROTOCOL_error = LMODULE_protocol.error;
 
 const MONGOOSE_model_account = LMODULE_models.account.model;
+const MONGOOSE_model_course = LMODULE_models.course.model;
 
 const get_login_page = (EXPRESS_request, EXPRESS_response) => {
     EXPRESS_response.render('pages/login', { data: EXPRESS_response.DATA_gathered_data });
@@ -25,10 +26,21 @@ const get_index_page = (EXPRESS_request, EXPRESS_response) => {
 };
 
 const get_courses_page = (EXPRESS_request, EXPRESS_response) => {
-    EXPRESS_response.render('pages/courses', { data: EXPRESS_response.DATA_gathered_data });
+    MONGOOSE_model_course.get_by_new(
+        10, (TMP_error_1, MONGOOSE_docs_courses) => {
+            EXPRESS_response.DATA_gathered_data.courses = MONGOOSE_docs_courses.map(
+                (MONGOOSE_doc_course) => MONGOOSE_model_course.to_public_api(
+                    MONGOOSE_doc_course
+                )
+            );
+            LMODULE_debug.print_message(EXPRESS_response.DATA_gathered_data.courses);
+            EXPRESS_response.render('pages/courses', { data: EXPRESS_response.DATA_gathered_data });
+        }
+    )
 };
 
 const get_settings_page = (EXPRESS_request, EXPRESS_response) => {
+
     EXPRESS_response.render('pages/settings', { data: EXPRESS_response.DATA_gathered_data });
 };
 
@@ -68,8 +80,26 @@ const get_profile_page = (EXPRESS_request, EXPRESS_response) => {
     );
 };
 
+const get_not_found_page = (EXPRESS_request, EXPRESS_response) => {
+    EXPRESS_response.DATA_gathered_data.requested = EXPRESS_request.url;
+    EXPRESS_response.status(404).render('pages/notfound', {
+        data: EXPRESS_response.DATA_gathered_data 
+    });
+};
+
+const get_course_view_page = (EXPRESS_request, EXPRESS_response) => {
+
+};
+
+const get_course_edit_page = (EXPRESS_request, EXPRESS_response) => {
+
+};
+
 module.exports.get_login_page = get_login_page;
 module.exports.get_index_page = get_index_page;
 module.exports.get_profile_page = get_profile_page;
 module.exports.get_courses_page = get_courses_page;
 module.exports.get_settings_page = get_settings_page;
+module.exports.get_not_found_page = get_not_found_page;
+module.exports.get_course_view_page = get_course_view_page;
+module.exports.get_course_edit_page = get_course_edit_page;

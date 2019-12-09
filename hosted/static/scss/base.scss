@@ -8,6 +8,12 @@ $link2: #38B5FF;
 $background1: #212426;
 $background2: #0F1112;
 
+$success1: #0CE835;
+$success2: #0CCE35;
+
+$failure1: #FF1001;
+$failure2: #DC1001;
+
 $greytone1: #4c555a;
 
 $fa-font-path: '~@fortawesome/fontawesome-free/webfonts';
@@ -49,6 +55,15 @@ p {
     color: $highlight2;
 }
 
+.center-text {
+    text-align:center;
+}
+
+.big-text {
+    font-size:100px;
+    line-height:100px;
+}
+
 .noselect {
 	-webkit-user-select: none;
 	-moz-user-select: none;
@@ -70,9 +85,10 @@ p {
     text-align:center;
     max-width:800px;
     margin:0 auto;
+    position:relative;
 }
 
-input[type='text'], input[type='password'] {
+input[type='text'], input[type='password'], textarea {
     font-size:25px;
     line-height:40px;
     margin:10px 0px;
@@ -85,6 +101,18 @@ input[type='text'], input[type='password'] {
         border-bottom:2px solid $highlight1;
         background-color: $background1;
         color:$highlight1;
+    }
+}
+
+form[data-status="SUCCESS"] {
+    .success-green {
+        color: $success1;
+    };
+}
+
+form[data-status="FAILURE"] {
+    .failure-red {
+        color: $failure1;
     }
 }
 
@@ -258,6 +286,14 @@ input[type="file"] {
 
 .picture-box {
     border:1px solid $highlight3;
+    &.small {
+        width:50px;
+        height:50px;
+    }
+    &.medium {
+        width:100px;
+        height:100px;
+    }
     &.large {
         width: 200px;
         height: 200px;
@@ -265,6 +301,12 @@ input[type="file"] {
     &.circle {
         border-radius:50%;
     }
+}
+
+.course-container {
+    padding:15px;
+    border:1px solid $highlight3;
+    margin-top:20px;
 }
 
 #profile-description {
@@ -290,5 +332,23 @@ input[type="file"] {
         margin-left: 10px;
         font-size: 13px;
         line-height:16px;
+    }
+}
+
+.course-description {
+    display:inline-block;
+    vertical-align:top;
+    h1 {
+        color: $highlight3;
+        margin-left: 10px;
+        display: inline-block;
+        font-size: 32px;
+        line-height:32px;
+    }
+    h4 {
+        color: $greytone1;
+        margin-left:10px;
+        line-height:32px;
+        font-size: 16px;
     }
 }

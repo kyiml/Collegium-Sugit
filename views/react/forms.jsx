@@ -16,13 +16,17 @@ class SignupForm extends React.Component {
         e.preventDefault();
         const FORM_method = $(this.form.current).attr("method");
         const FORM_action = $(this.form.current).attr("action");
-        const FORM_data = $(this.form.current).serialize();
+        const FORM_form = this.form.current;
         Func.send_ajax(
             FORM_method, 
             FORM_action, 
-            FORM_data, 
+            FORM_form, 
             (XHR_response) => {
+                $(this.form.current).attr("data-status", "SUCCESS");
                 window.location = XHR_response.redirect;
+            },
+            (XHR_response) => {
+                $(this.form.current).attr("data-status", "FAILURE");
             }
         );
         return false;
@@ -82,13 +86,17 @@ class LoginForm extends React.Component {
         e.preventDefault();
         const FORM_method = $(this.form.current).attr("method");
         const FORM_action = $(this.form.current).attr("action");
-        const FORM_data = $(this.form.current).serialize();
+        const FORM_form = this.form.current;
         Func.send_ajax(
             FORM_method, 
             FORM_action, 
-            FORM_data, 
+            FORM_form, 
             (XHR_response) => { 
+                $(this.form.current).attr("data-status", "SUCCESS");
                 window.location = XHR_response.redirect; 
+            },
+            (XHR_response) => {
+                $(this.form.current).attr("data-status", "FAILURE");
             }
         );
         return false;
@@ -133,8 +141,12 @@ class UploadImageForm extends React.Component {
             FORM_method, 
             FORM_action, 
             FORM_form, 
-            (XHR_response) => { 
+            (XHR_response) => {
+                $(this.form.current).attr("data-status", "SUCCESS");
                 document.querySelector(`#${this.props.form_id}`).value = XHR_response.location;
+            },
+            (XHR_response) => {
+                $(this.form.current).attr("data-status", "FAILURE");
             }
         );
         return false;
@@ -158,7 +170,7 @@ class UploadImageForm extends React.Component {
                         onChange={function() {this.forceUpdate()}.bind(this)}
                     ></input>
                 </label>
-                <span className="settings-file-selected">
+                <span className="settings-file-selected success-green failure-red">
                     {
                         this.file_name.current && 
                         this.file_name.current.value.match(/^(C:\\fakepath\\)?(.*?)$/)[2] ||
@@ -182,13 +194,17 @@ class SettingsForm extends React.Component {
         e.preventDefault();
         const FORM_method = $(this.form.current).attr("method");
         const FORM_action = $(this.form.current).attr("action");
-        const FORM_data = $(this.form.current).serialize();
+        const FORM_form = this.form.current;
         Func.send_ajax(
             FORM_method, 
             FORM_action, 
-            FORM_data, 
-            (XHR_response) => { 
+            FORM_form, 
+            (XHR_response) => {
+                $(this.form.current).attr("data-status", "SUCCESS");
                 window.location = XHR_response.redirect; 
+            },
+            (XHR_response) => {
+                $(this.form.current).attr("data-status", "FAILURE");
             }
         );
         return false;
@@ -218,4 +234,72 @@ class SettingsForm extends React.Component {
     }
 }
 
-export {LoginForm, SignupForm, UploadImageForm, SettingsForm};
+class CourseForm extends React.Component {
+    constructor(props) {
+        super(props);
+        this.form_id = Func.LEMON("form-id");
+        this.form = React.createRef();
+        this.handle_upload_course = this.handle_upload_course.bind(this);
+    }
+    handle_upload_course(e) {
+        e.preventDefault();
+        const FORM_method = $(this.form.current).attr("method");
+        const FORM_action = $(this.form.current).attr("action");
+        const FORM_form = this.form.current;
+        Func.send_ajax(
+            FORM_method, 
+            FORM_action, 
+            FORM_form, 
+            (XHR_response) => {
+                $(this.form.current).attr("data-status", "SUCCESS");
+                window.location = XHR_response.redirect;
+            },
+            (XHR_response) => {
+                $(this.form.current).attr("data-status", "FAILURE");
+            }
+        );
+        return false;
+    }
+    render() {
+        return (
+            <div>
+                <p>Create New Course</p>
+                <br></br>
+                <br></br>
+                <p>Set Course Picture</p>
+                <UploadImageForm form_id={this.form_id}></UploadImageForm>
+                <form 
+                    action='/upload/course' 
+                    method='POST' 
+                    onSubmit={this.handle_upload_course} 
+                    ref={this.form}
+                >
+                    <br></br>
+                    <br></br>
+                    <p>Course Title</p>
+                    <input className="col-3" name="title" type="text" ref={this.title}></input>
+                    <input id={this.form_id} type="hidden" name="thumbnail"></input>
+                    <br></br>
+                    <br></br>
+                    <p>Course Description</p>
+                    <textarea name="description" className="col-3">
+                        
+                    </textarea>
+                    <br></br>
+                    <br></br>
+                    <br></br>
+                    <br></br>
+                    <div style={{position: "absolute", right:"0", bottom:"0"}}>
+                        <input 
+                            className="settings-button" 
+                            type="submit" 
+                            value="Create Course">
+                        </input>
+                    </div>
+                </form>
+            </div>
+        );
+    }
+}
+
+export {LoginForm, SignupForm, UploadImageForm, SettingsForm, CourseForm};

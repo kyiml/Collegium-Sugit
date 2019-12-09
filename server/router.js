@@ -23,6 +23,9 @@ const CNST_get_index_page = LMODULE_controllers.pages.get_index_page;
 const CNST_get_profile_page = LMODULE_controllers.pages.get_profile_page;
 const CNST_get_courses_page = LMODULE_controllers.pages.get_courses_page;
 const CNST_get_settings_page = LMODULE_controllers.pages.get_settings_page;
+const CNST_get_not_found_page = LMODULE_controllers.pages.get_not_found_page;
+const CNST_get_course_view_page = LMODULE_controllers.pages.get_course_view_page;
+const CNST_get_course_edit_page = LMODULE_controllers.pages.get_course_edit_page;
 
 const CNST_login = LMODULE_controllers.login_manager.login;
 const CNST_signup = LMODULE_controllers.login_manager.signup;
@@ -31,6 +34,8 @@ const CNST_update_settings = LMODULE_controllers.login_manager.update_settings;
 
 const CNST_upload_image = LMODULE_controllers.asset_manager.upload_image;
 const CNST_download_asset = LMODULE_controllers.asset_manager.download_asset;
+
+const CNST_upload_course = LMODULE_controllers.course_manager.upload_course;
 
 const router = (EXPRESS_app) => {
     EXPRESS_app.use(CNST_gather_csrf_data);
@@ -45,11 +50,17 @@ const router = (EXPRESS_app) => {
     EXPRESS_app.get('/settings', CNST_require_login, CNST_get_settings_page);
     EXPRESS_app.post('/settings', CNST_require_login, CNST_update_settings);
     EXPRESS_app.get('/courses', CNST_get_courses_page);
+    EXPRESS_app.get('/courses/view/*', CNST_get_course_view_page);
+    EXPRESS_app.get('/courses/edit/*', CNST_get_course_edit_page);
+
 
     EXPRESS_app.post('/upload/image', CNST_require_login,
         MULTER.single('image'), CNST_upload_image);
 
-    EXPRESS_app.get('/assets*', CNST_require_login, CNST_download_asset);
+    EXPRESS_app.post('/upload/course', CNST_require_login, CNST_upload_course);
+
+    EXPRESS_app.get('/assets*', CNST_download_asset);
+    EXPRESS_app.get('/*', CNST_get_not_found_page);
 };
 
 module.exports = router;

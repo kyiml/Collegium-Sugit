@@ -8,5 +8,6 @@
  */
 
 module.exports.login_manager = require('./login_manager.js');
-module.exports.asset_manager = require('./asset_manager');
+module.exports.asset_manager = require('./asset_manager.js');
+module.exports.course_manager = require('./course_manager.js');
 module.exports.pages = require('./pages.js');

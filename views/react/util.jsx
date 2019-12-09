@@ -1,13 +1,5 @@
-const registered_errors = {};
-
-const handle_error = (error, data) => {
-    if(registered_errors[error]) {
-        registered_errors[error](data);
-    }
-};
-
-const send_ajax = (type, action, data, success) => {
-    data = `_csrf=${document.querySelector("#csrf").dataset.token}&${data}`;
+const send_ajax = (type, action, form, success, error) => {
+    const data = `_csrf=${document.querySelector("#csrf").dataset.token}&${$(form).serialize()}`;
 	$.ajax({
 		cache: false,
 		type: type,
@@ -15,14 +7,11 @@ const send_ajax = (type, action, data, success) => {
 		data: data,
 		dataType: "json",
 		success: success,
-		error: (xhr) => {
-			const message_obj = JSON.parse(xhr.responseText);
-			handle_error(message_obj.error, message_obj);
-		}
+		error: error
 	});
 };
 
-const send_ajax_multipart = (type, action, form, success) => {
+const send_ajax_multipart = (type, action, form, success, error) => {
 	const data = new FormData(form);
 	action = `${action}?_csrf=${document.querySelector("#csrf").dataset.token}`
 	$.ajax({
@@ -33,15 +22,8 @@ const send_ajax_multipart = (type, action, form, success) => {
 		processData:false,
 		contentType:false,
 		success: success,
-		error: (xhr) => {
-			const message_obj = JSON.parse(xhr.responseText);
-			handle_error(message_obj.error, message_obj);
-		}
+		error: error
 	});
-}
-
-const register_error = (error, func) => {
-    registered_errors[error] = func;
 };
 
 const LEMON = (UUID_tag) => {
@@ -62,6 +44,6 @@ const LEMON = (UUID_tag) => {
     return UUID_string.substr(0, UUID_string.length - 1);
 };
 
-const Func = {LEMON, send_ajax, send_ajax_multipart, register_error};
+const Func = {LEMON, send_ajax, send_ajax_multipart};
 
 export {Func};

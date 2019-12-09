@@ -149,6 +149,7 @@ EXPRESS_app.use((EXPRESS_request, EXPRESS_response, EXPRESS_next) => {
 
 EXPRESS_app.set('view engine', 'ejs');
 EXPRESS_app.set('views', `${__dirname}/../views`);
+EXPRESS_app.disable('view cache');
 EXPRESS_app.use(MODULE_cookie_parser());
 
 EXPRESS_app.use(MODULE_csrf());

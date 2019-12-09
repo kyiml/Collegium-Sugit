@@ -9,7 +9,25 @@
     <body>
         <%- include("../components/header.ejs", {data: data}); -%>
         <%- include("../components/navbar.ejs", {data: data}); -%>
-
+        <div class="page-centered">
+            <div class="content-box">
+                <% if(data.user) { %>
+                    <% if(data.user.account_type === "ACCOUNT_EDUCATOR") { %>
+                        <div class="display-modal-small">
+                            <div data-component="CourseForm"></div>
+                        </div>
+                        <br></br>
+                        <br></br>
+                        <br></br>
+                    <% }%>
+                <% }%>
+                <p>New Courses</p>
+                <div 
+                    data-component="CourseList" 
+                    data-prop-courses='<%- JSON.stringify(data.courses).replace(/'/g, "") -%>'>
+                </div>
+            </div>
+        </div>
         <%- include("../components/footer.ejs", {data: data}); -%>
     </body>
 </html>
