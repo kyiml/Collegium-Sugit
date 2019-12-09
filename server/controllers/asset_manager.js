@@ -99,14 +99,38 @@ const upload_image = (EXPRESS_request, EXPRESS_response) => {
     });
 };
 
+const validate_asset_link = (EXPRESS_body_asset_url, EXPRESS_session_account, TMP_callback_1) => {
+    const REGEX_url_asset_id = /^\/assets\/([0-9a-f]*?)\/?$/;
+    const REGEX_url_asset_id_match = EXPRESS_body_asset_url.match(REGEX_url_asset_id);
+    if (!REGEX_url_asset_id_match) {
+        TMP_callback_1({ error: PROTOCOL_error.INVALID_QUERY, status: 400 }, undefined);
+        return;
+    }
+    const EXPRESS_url_asset_id = REGEX_url_asset_id_match[1];
+    MONGOOSE_model_asset.find_by_id(EXPRESS_url_asset_id, (TMP_error_1, MONGOOSE_doc_asset) => {
+        if (TMP_error_1 || !MONGOOSE_doc_asset) {
+            TMP_callback_1({ error: PROTOCOL_error.NOT_FOUND, status: 404 }, undefined);
+            return;
+        }
+        const MONGOOSE_asset_read_permission = MONGOOSE_model_asset.read_permission(
+            MONGOOSE_doc_asset, EXPRESS_session_account
+        );
+        if (!MONGOOSE_asset_read_permission) {
+            TMP_callback_1({ error: PROTOCOL_error.PERMISSION_DENIED, status: 403 }, undefined);
+            return;
+        }
+        TMP_callback_1(undefined, MONGOOSE_doc_asset);
+    });
+};
+
 const download_asset = (EXPRESS_request, EXPRESS_response) => {
     validate_asset_link(
-        EXPRESS_request.url, 
-        EXPRESS_request.session.account, 
+        EXPRESS_request.url,
+        EXPRESS_request.session.account,
         (TMP_error_1, MONGOOSE_doc_asset) => {
-            if(TMP_error_1) {
+            if (TMP_error_1) {
                 EXPRESS_response.status(TMP_error_1.status).json({
-                    error: TMP_error_1.error
+                    error: TMP_error_1.error,
                 });
                 return;
             }
@@ -129,30 +153,6 @@ const download_asset = (EXPRESS_request, EXPRESS_response) => {
             );
         }
     );
-};
-
-const validate_asset_link = (EXPRESS_body_asset_url, EXPRESS_session_account, TMP_callback_1) => {
-    const REGEX_url_asset_id = /^\/assets\/([0-9a-f]*?)\/?$/;
-    const REGEX_url_asset_id_match = EXPRESS_body_asset_url.match(REGEX_url_asset_id);
-    if (!REGEX_url_asset_id_match) {
-        TMP_callback_1({error: PROTOCOL_error.INVALID_QUERY, status:400}, undefined);
-        return;
-    }
-    const EXPRESS_url_asset_id = REGEX_url_asset_id_match[1];
-    MONGOOSE_model_asset.find_by_id(EXPRESS_url_asset_id, (TMP_error_1, MONGOOSE_doc_asset) => {
-        if (TMP_error_1 || !MONGOOSE_doc_asset) {
-            TMP_callback_1({error: PROTOCOL_error.NOT_FOUND, status:404}, undefined);
-            return;
-        }
-        const MONGOOSE_asset_read_permission = MONGOOSE_model_asset.read_permission(
-            MONGOOSE_doc_asset, EXPRESS_session_account
-        );
-        if (!MONGOOSE_asset_read_permission) {
-            TMP_callback_1({error: PROTOCOL_error.PERMISSION_DENIED, status:403}, undefined);
-            return;
-        }
-        TMP_callback_1(undefined, MONGOOSE_doc_asset);
-    });
 };
 
 module.exports.upload_image = upload_image;

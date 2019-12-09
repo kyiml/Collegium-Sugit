@@ -164,12 +164,12 @@ const update_settings = (EXPRESS_request, EXPRESS_response) => {
     const EXPRESS_body_profile_picture = EXPRESS_request.body.profile_picture;
     if (EXPRESS_body_profile_picture) {
         LMODULE_asset_manager.validate_asset_link(
-            EXPRESS_body_profile_picture, 
+            EXPRESS_body_profile_picture,
             undefined,
             (TMP_error_1) => {
-                if(TMP_error_1) {
+                if (TMP_error_1) {
                     EXPRESS_response.status(TMP_error_1.status).json({
-                        error:TMP_error_1.error
+                        error: TMP_error_1.error,
                     });
                     return;
                 }
@@ -188,10 +188,10 @@ const update_settings = (EXPRESS_request, EXPRESS_response) => {
                             });
                             return;
                         }
-                        EXPRESS_request.session.account.profile_picture = 
+                        EXPRESS_request.session.account.profile_picture =
                             EXPRESS_body_profile_picture;
                         EXPRESS_response.status(200).send({
-                            redirect: `/profile/${EXPRESS_request.session.account.username}`
+                            redirect: `/profile/${EXPRESS_request.session.account.username}`,
                         });
                         return;
                     }

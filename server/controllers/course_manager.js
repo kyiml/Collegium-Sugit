@@ -13,16 +13,16 @@ const upload_course = (EXPRESS_request, EXPRESS_response) => {
     const EXPRESS_body_title = EXPRESS_request.body.title;
     const EXPRESS_session_author = EXPRESS_request.session.account._id;
 
-    if(!EXPRESS_body_description || !EXPRESS_body_title) {
+    if (!EXPRESS_body_description || !EXPRESS_body_title) {
         EXPRESS_response.status(400).json({
             error: PROTOCOL_error.INCOMPLETE_FORM,
         });
         return;
     }
     const TMP_callback_1 = (TMP_error_1, MONGOOSE_doc_asset) => {
-        if(TMP_error_1) {
+        if (TMP_error_1) {
             EXPRESS_response.status(TMP_error_1.status).json({
-                error: TMP_error_1.error
+                error: TMP_error_1.error,
             });
             return;
         }
@@ -30,7 +30,7 @@ const upload_course = (EXPRESS_request, EXPRESS_response) => {
             thumbnail: MONGOOSE_doc_asset ? EXPRESS_body_thumbnail : undefined,
             title: EXPRESS_body_title,
             description: EXPRESS_body_description,
-            author: EXPRESS_session_author
+            author: EXPRESS_session_author,
         };
         const MONGOOSE_new_course = new MONGOOSE_model_course(
             MONGOOSE_new_course_data
@@ -42,8 +42,8 @@ const upload_course = (EXPRESS_request, EXPRESS_response) => {
             );
             EXPRESS_response.status(201).json({
                 location: `/courses/${MONGOOSE_saved_course_data._id}`,
-                //redirect: `/courses/view/${MONGOOSE_saved_course_data._id}`
-                redirect: `/courses/`
+                // redirect: `/courses/view/${MONGOOSE_saved_course_data._id}`
+                redirect: '/courses/',
             });
             return;
         });
@@ -54,13 +54,13 @@ const upload_course = (EXPRESS_request, EXPRESS_response) => {
             });
             return;
         });
-    }
-    if(!EXPRESS_body_thumbnail) {
+    };
+    if (!EXPRESS_body_thumbnail) {
         TMP_callback_1(undefined, undefined);
         return;
     }
     LMODULE_asset_manager.validate_asset_link(
-        EXPRESS_body_thumbnail, 
+        EXPRESS_body_thumbnail,
         EXPRESS_session_author,
         TMP_callback_1
     );

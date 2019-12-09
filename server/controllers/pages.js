@@ -36,11 +36,10 @@ const get_courses_page = (EXPRESS_request, EXPRESS_response) => {
             LMODULE_debug.print_message(EXPRESS_response.DATA_gathered_data.courses);
             EXPRESS_response.render('pages/courses', { data: EXPRESS_response.DATA_gathered_data });
         }
-    )
+    );
 };
 
 const get_settings_page = (EXPRESS_request, EXPRESS_response) => {
-
     EXPRESS_response.render('pages/settings', { data: EXPRESS_response.DATA_gathered_data });
 };
 
@@ -83,15 +82,15 @@ const get_profile_page = (EXPRESS_request, EXPRESS_response) => {
 const get_not_found_page = (EXPRESS_request, EXPRESS_response) => {
     EXPRESS_response.DATA_gathered_data.requested = EXPRESS_request.url;
     EXPRESS_response.status(404).render('pages/notfound', {
-        data: EXPRESS_response.DATA_gathered_data 
+        data: EXPRESS_response.DATA_gathered_data,
     });
 };
 
-const get_course_view_page = (EXPRESS_request, EXPRESS_response) => {
+const get_course_view_page = (/* EXPRESS_request, EXPRESS_response*/) => {
 
 };
 
-const get_course_edit_page = (EXPRESS_request, EXPRESS_response) => {
+const get_course_edit_page = (/* EXPRESS_request, EXPRESS_response*/) => {
 
 };
 
