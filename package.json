@@ -10,9 +10,9 @@
     "build": "gulp build",
     "watch": "gulp watch",
     "start": "node ./server/app.js",
-    "mongo": "sudo mongod -dbpath CollegiumSugit & sleep 2; mongo CollegiumSugit",
+    "mongo": "sudo systemctl start mongod; sudo mongod -dbpath CollegiumSugit & sleep 2; mongo CollegiumSugit",
     "nodemon": "nodemon --watch server --watch views/react --watch hosted/static/scss ./server/app.js",
-    "localstack-setup": "docker-compose up -d; aws --endpoint-url=http://localhost:4572 s3 mb s3://local_test_bucket; aws --endpoint-url=http://localhost:4572 s3api put-bucket-acl --bucket local_test_bucket --acl public-read"
+    "localstack-setup": "echo \"access_key\n secret_access_key\n \n \n\" | sudo aws configure; docker-compose up -d; aws --endpoint-url=http://localhost:4572 s3 mb s3://local_test_bucket; aws --endpoint-url=http://localhost:4572 s3api put-bucket-acl --bucket local_test_bucket --acl public-read"
   },
   "keywords": [],
   "author": "",
